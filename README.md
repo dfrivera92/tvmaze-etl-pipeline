@@ -1,5 +1,8 @@
 # 🎬 TVMaze ETL Pipeline
-
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Workflow](https://img.shields.io/badge/Workflow-ETL_Pipeline-orange)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ## Overview
 An automated ETL pipeline that extracts TV show data from TVMaze API, processes it through multiple stages, and loads it into a SQLite database.
 
