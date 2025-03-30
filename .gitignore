@@ -1,0 +1,32 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+*.log
+
+*.vscode-server
+
+# IDE-specific files and directories
+.vscode/
+.idea/
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and caches
+*.log
+logs/
+*.swp
+*.swo
+.cache/
+
+# Dependency directories
+venv/
+env/
+.env
