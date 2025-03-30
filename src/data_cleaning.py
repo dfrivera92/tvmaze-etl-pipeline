@@ -22,7 +22,7 @@ class TVMazeDataCleaner:
             pd.DataFrame: The cleaned DataFrame
         """
         columns_to_drop = [
-            'runtime', 'officialSite', 'dvdCountry', 'schedule.time', 'rating.average',
+            'runtime', 'dvdCountry', 'schedule.time', 'rating.average',
             'externals.tvrage', 'externals.thetvdb', '_links.self.href', '_links.previousepisode.href',
             '_links.previousepisode.name', '_links.nextepisode.href', '_links.nextepisode.name',
             'network', 'network.country.code', 'network.country.name', 'network.country.timezone',
@@ -37,6 +37,7 @@ class TVMazeDataCleaner:
         self.df.rename(columns={
             'id': 'tvmaze_id',
             'url': 'tvmaze_url',
+            'officialSite': 'official_site_url',
             'name': 'show_name',
             'type': 'show_type',
             'language': 'show_language',
@@ -55,6 +56,7 @@ class TVMazeDataCleaner:
         }, inplace=True)
 
         # Handle missing values and type conversions
+        self.df["official_site_url"] = self.df["official_site_url"].fillna("Not Available")
         self.df["show_language"] = self.df["show_language"].fillna("Other")
         self.df["last_updated_utc"] = pd.to_datetime(self.df["last_updated_utc"], unit='s', utc=True).dt.tz_localize(None)
         self.df["premiere_date"] = pd.to_datetime(self.df["premiere_date"], errors='coerce')

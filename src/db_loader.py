@@ -50,6 +50,7 @@ class SQLiteDB:
                 CREATE TABLE IF NOT EXISTS shows (
                     tvmaze_id INTEGER PRIMARY KEY,
                     tvmaze_url TEXT,
+                    official_site_url TEXT,
                     show_name TEXT NOT NULL,
                     show_type_id INTEGER,
                     language_id INTEGER,
