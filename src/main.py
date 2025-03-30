@@ -44,7 +44,28 @@ normalized_data = data_normalizer.transform()
 # Upload data
 db = SQLiteDB()
 for table, df in normalized_data.items():
-	db.insert_dataframe(df, table)
+    db.insert_dataframe(df, table)
 db.close_connection()
 print(f"\n\nData uploaded to SQLite database successfully.")
 
+# Data Analysis
+df_avg_runtime = db.run_query("SELECT ROUND(AVG(average_runtime_minutes),2) AS avg_runtime FROM shows")
+print(f"\n\nAverage runtime of shows: {df_avg_runtime['avg_runtime'][0]}min")
+
+query_genre_count = """
+SELECT 
+    g.genre,
+    COUNT(sg.show_id) AS show_count
+FROM shows s
+LEFT JOIN show_genres sg ON s.tvmaze_id = sg.show_id
+LEFT JOIN genres g ON sg.genre_id = g.id
+GROUP BY g.genre
+ORDER BY show_count DESC
+"""
+df_genre_count = db.run_query(query_genre_count)
+print("\n\nGenre count:")
+print(df_genre_count.to_string(index=False))
+
+df_unique_domains = db.run_query("SELECT DISTINCT(official_site_url) AS official_site_url FROM shows")
+print(f"\n\nUnique official sites domains:")
+print("\n".join(df_unique_domains["official_site_url"].astype(str)))

@@ -26,13 +26,13 @@ class TVMazeDataNormalizer:
             print(f"Unexpected error: {e}")
         return None
 
-    def _create_lookup_table(self, column_name, rename_map=None, sort_column=None):
+    def _create_lookup_table(self, column_name, rename_map=None, sort_column=None, explode_column=False):
         """Creates a lookup table with unique values from a DataFrame column."""
         df_lookup = self.df[[column_name]].drop_duplicates().dropna()
+        if explode_column:
+            df_lookup = df_lookup.explode(column_name).dropna().drop_duplicates()
         if rename_map:
             df_lookup.rename(columns=rename_map, inplace=True)
-        if column_name == 'show_genres':
-            df_lookup = df_lookup.explode(rename_map[column_name]).dropna().drop_duplicates()
         if sort_column:
             df_lookup = df_lookup.sort_values(by=sort_column)
 
@@ -56,7 +56,7 @@ class TVMazeDataNormalizer:
         # Lookup tables
         self.transformed_data['show_types'] = self._create_lookup_table("show_type", sort_column="show_type")
         self.transformed_data['languages'] = self._create_lookup_table("show_language", {"show_language": "language"}, "language")
-        self.transformed_data['genres'] = self._create_lookup_table("show_genres", {"show_genres": "genre"}, 'genre')
+        self.transformed_data['genres'] = self._create_lookup_table("show_genres", {"show_genres": "genre"}, 'genre', explode_column=True)
         self.transformed_data['statuses'] = self._create_lookup_table("show_status", {"show_status": "status"}, "status")
 
         # Schedule days lookup
@@ -74,7 +74,7 @@ class TVMazeDataNormalizer:
 
         # Process main 'shows' DataFrame
         self.transformed_data['shows'] = self.df[[
-            'tvmaze_id', 'show_name', 'tvmaze_url', 'average_runtime_minutes', 'premiere_date',
+            'tvmaze_id', 'show_name', 'tvmaze_url', 'official_site_url', 'average_runtime_minutes', 'premiere_date',
             'end_date', 'show_tvmaze_weight', 'show_summary', 'last_updated_utc',
             'imdb_id', 'image_medium_url', 'image_original_url', 'language_id',
             'show_type_id', 'status_id'
