@@ -1,9 +1,15 @@
+#%%
 from datetime import datetime
 from data_ingestion import TVMazeDataFetcher
+from data_processing import TVMazeDataProcessor
+from data_profiling import TVMazeDataProfiler
+from data_cleaning import TVMazeDataCleaner
+from data_export import ParquetExporter
+from data_normalization import TVMazeDataNormalizer
+from db_loader import SQLiteDB
 
 # Data ingestion
 year_month = input("Enter year and month (YYYY-MM): ").strip()
-
 while True:
     try:
         datetime.strptime(year_month, "%Y-%m")
@@ -16,3 +22,29 @@ fetcher.fetch_data(year_month)
 print(f"\n\nFetched shows for {year_month}")
 
 # Data processing
+data_processor = TVMazeDataProcessor()
+processed_df = data_processor.process_tv_shows(year_month)
+
+# Data profiling
+data_profiler = TVMazeDataProfiler()
+profile_path = data_profiler.generate_profile_report(processed_df)
+
+# Data cleaning
+data_cleaner = TVMazeDataCleaner(processed_df)
+cleaned_df = data_cleaner.clean_data()
+
+# Data export
+exporter = ParquetExporter()
+parquet_file_path = exporter.export_to_parquet(cleaned_df, filename=f"tvmaze_data_{year_month}.parquet")
+
+# Data normalization
+data_normalizer = TVMazeDataNormalizer(parquet_file_path)
+normalized_data = data_normalizer.transform()
+
+# Upload data
+db = SQLiteDB()
+for table, df in normalized_data.items():
+	db.insert_dataframe(df, table)
+db.close_connection()
+print(f"\n\nData uploaded to SQLite database successfully.")
+
