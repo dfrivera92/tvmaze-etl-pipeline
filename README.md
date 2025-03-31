@@ -19,15 +19,20 @@ tvmaze-etl-pipeline/
 │   └── YYYY-MM-DD.json
 ├── profiling/            # Data quality reports
 │   └── data_profile_report.html
-└── src/                  # Source code
-    ├── data_ingestion.py
-    ├── data_processing.py
-    ├── data_profiling.py
-    ├── data_cleaning.py
-    ├── data_export.py
-    ├── data_normalization.py
-    ├── db_loader.py
-    └── main.py
+├── src/                  # Source code
+│   ├── data_ingestion.py
+│   ├── data_processing.py
+│   ├── data_profiling.py
+│   ├── data_cleaning.py
+│   ├── data_export.py
+│   ├── data_normalization.py
+│   ├── db_loader.py
+│   └── main.py
+└── tests/                  # Tests
+    ├── test_data_cleaning
+    ├── test_data_ingestion.py
+    ├── test_data_processing.py
+    └── test_db_loader.py
 ```
 
 # Key features
@@ -37,7 +42,8 @@ tvmaze-etl-pipeline/
 - 🚀 **Efficient Storage**: Uses Parquet format for processed data
 - 🗄️ **Relational Model**: Normalizes data into efficient SQL tables
 - ⚙️ **Modular Design**: Each component follows single responsibility principle
-
+- 🧪 **Comprehensive Testing**: Ensures reliability with unit tests for data cleaning, ingestion, processing, and database loading using `pytest`
+  
 ## ⚙️ Requirements
 Install required packages
 ```
@@ -114,6 +120,19 @@ The ETL pipeline is modular, with each component handling a specific transformat
 The **TVMaze ETL pipeline** follows a **relational model** to efficiently store TV show data. The database schema is represented in:  
 📌 [`model_structure.png`](/model/model_structure.png)  
 <div align="center"><img src="https://github.com/user-attachments/assets/09d96c15-ffdd-44b6-a7aa-043ca2adf558" width=60% height=60%></div>
+
+## 🧪 Tests
+Unit tests ensure the correctness of each pipeline component. The test suite is located in the [`tests`](/tests/) directory and includes:
+- ✅ **Data Cleaning**: Ensures handling of missing values, data type conversions, and renaming columns ([`test_data_cleaning.py`](/tests/test_data_cleaning.py/))
+- ✅ **Data Ingestion**: Tests API fetching, invalid date handling, and data directory setup ([`test_data_ingestion.py`](/tests/test_data_ingestion.py))
+- ✅ **Data Processing**: Verifies JSON to DataFrame transformation ([`test_data_processing.py`](/tests/test_data_processing.py))
+- ✅ **Database Loading**: Ensures table creation and correct data insertion ([`test_db_loader.py`](/tests/test_db_loader.py))
+
+### 🔍 Running Tests
+Run the tests using:
+```
+pytest tests/ -v
+```
 
 ## 📜 License
 This project is licensed under the terms of the [LICENSE](LICENSE) file included in the repository.
