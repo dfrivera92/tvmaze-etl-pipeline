@@ -31,7 +31,7 @@ tvmaze-etl-pipeline/
 ```
 
 # Key features
--📡 **API Integration**: Fetches TV show data from TVMaze API for any specified month
+- 📡 **API Integration**: Fetches TV show data from TVMaze API for any specified month
 - 🧹 **Data Cleaning**: Handles missing values, duplicates, and inconsistencies
 - 📊 **Data Profiling**: Generates comprehensive quality reports with `ydata-profiling`
 - 🚀 **Efficient Storage**: Uses Parquet format for processed data
@@ -56,6 +56,10 @@ The pipeline executes the following steps as shown in [`main.py`](/src/main.py):
 5. Data Export: [`ParquetExporter`](/src/data_export.py) saves processed data as Parquet
 6. Data Normalization: [`TVMazeDataNormalizer`](/src/data_normalization.py) creates relational tables
 7. Database Loading: [`SQLiteDB`](/src/db_loader.py) loads data into SQLite
+8. 📊 **Data Analysis**: [`main.py`](/src/main.py#L51-L71) runs analytical queries on the dataset, including:  
+   - ⏳ **Average Runtime of Shows**  
+   - 🎭 **Genre Distribution**  
+   - 🌐 **Unique Official Website Domains**  
 
 ## 📂 Sample data (January 2024)
 The repository includes sample data from January 2024:
@@ -65,13 +69,51 @@ The repository includes sample data from January 2024:
   Cleaned and transformed data in [`/data/tvmaze_data_2024-01.parquet`](/data/tvmaze_data_2024-01.parquet) (Parquet format)
 - 📊 **Data Profile**
   HTML profile generated with Pandas Profiling available at [`/profiling/data_profile_report.html`](/profiling/data_profile_report.html)
+- 📈 **Data Analysis**
+  After processing and storing the TV show data, the pipeline performs a data analysis to extract key insights:
+
+  ### ⏳ Average runtime of shows  
+  The average runtime of TV shows in the dataset:  
+  > **42.3 minutes**  
+
+  ---
+
+  ### 🎭 Genre distribution  
+  The count of shows by genre:  
+
+  ```plaintext
+      Genre       Show Count
+      ----------------------
+      Undefined         261
+      Drama            157
+      Comedy           123
+      Romance          73
+      ...
+  ```
+
+  ---
+
+  ### 🌐 Unique official website domains
+  Some distinct official site URLs from the dataset:
+  ```plaintext
+    http://www.bbc.co.uk/programmes/p01djw5m
+    http://www.bbc.co.uk/programmes/b006ml0g
+    http://www.nbc.com/the-tonight-show
+    http://www.bbc.co.uk/programmes/b006m8wd
+    ...
+  ```
 
 ## 🛠 Development
 The ETL pipeline is modular, with each component handling a specific transformation:
 - Each class in [`src`](/src/) follows single responsibility principle
 - Data validation at each transformation step
-- Comprehensive data profiling with ydata_profiling
+- Comprehensive data profiling with `ydata_profiling`
 - Efficient storage using Parquet format
+
+## 🏛️ Data Model Structure  
+The **TVMaze ETL pipeline** follows a **relational model** to efficiently store TV show data. The database schema is represented in:  
+📌 [`model_structure.png`](/model/model_structure.png)  
+<div align="center"><img src="https://github.com/user-attachments/assets/09d96c15-ffdd-44b6-a7aa-043ca2adf558" width=60% height=60%></div>
 
 ## 📜 License
 This project is licensed under the terms of the [LICENSE](LICENSE) file included in the repository.
