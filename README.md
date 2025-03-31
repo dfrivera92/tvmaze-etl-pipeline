@@ -52,7 +52,10 @@ pip install -r requirements.txt
 
 ## 🚀 Usage
 Run the ETL pipeline using:
-`python3 src/main.py`
+```
+python src/main.py
+```
+
 ### 🔄 Pipeline Workflow
 The pipeline executes the following steps as shown in [`main.py`](/src/main.py):
 1. Data Ingestion: [`TVMazeDataFetcher`](/src/data_ingestion.py) fetches show data from TVMaze API
